@@ -24,7 +24,7 @@ $(document).ready(function() {
     // Getting gifs from api... onto html
     $("button").on("click", function() {
         var sport = $(this).attr("data-sport");
-        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+        var queryURL = "https://giphy.com/?sgifs" +
             sport + "&api_key=3vpYgJ7viyfVBgB4NJcuUuN56N6oQl0C"
 
         $.ajax({
