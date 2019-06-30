@@ -1,70 +1,76 @@
-$(document).ready(function() {
-    var topics = ["baseball", "football", "hockey", "soccer", "golf", "tennis", "lacrosse", "cricket"];
+var topics = ["Bryce Harper", "Rhys Hoskins", "Christian Yelich", "Mike Trout", "Aaron Judge",
+    "Giancarlo Stanton", "Manny Machado", "Clayton Kershaw", "Mookie Betts", "Jose Altuve",
+    "Gary Sanchez", "Cody Bellinger", "Ronald Acuna Jr", "Anthony Rizzo", "Charlie Blackmon",
+    "Kris Bryant", "Jake Arrieta", "Hunter Pence"
+];
+var numberOfGIFs = 10;
+var cutOffRating = "PG";
 
-    // Add buttons for original sports array
-    function renderButtons() {
-        $("#sports-buttons").empty();
-        for (i = 0; i < topics.length; i++) {
-            $("#sports-buttons").append("<button class='btn btn-success' data-sport='" + sports[i] + "'>" + sports[i] + "</button>");
-        }
+function renderButtons() {
+    for (var i = 0; i < topics.length; i++) {
+        var newButton = $("<button>");
+        newButton.addClass("btn");
+        newButton.addClass("baseball-button");
+        newButton.text(topics[i]);
+        $("#button-container").append(newButton);
     }
+    $(".baseball-button").unbind("click");
 
-    renderButtons();
-
-    // Adding a button for each sport entered
-    $("#add-sport").on("click", function() {
-        event.preventDefault();
-        var sport = $("#sports-input").val().trim();
-        topics.push(sports);
-        renderButtons();
-        return;
+    $(".baseball-button").on("click", function() {
+        $(".gif-image").unbind("click");
+        $("#gif-container").empty();
+        $("#gif-container").removeClass("dotted-border");
+        populateGIFContainer($(this).text());
     });
 
+}
 
-    // Getting gifs from api... onto html
-    $("button").on("click", function() {
-        var sport = $(this).attr("data-sport");
-        var queryURL = "https://api.giphy.com/v1/gifs/search?" +
-            sports + "&api_key=3vpYgJ7viyfVBgB4NJcuUuN56N6oQl0C"
+function addButton(show) {
+    if (topics.indexOf(show) === -1) {
+        topics.push(show);
+        $("#button-container").empty();
+        renderButtons();
+    }
+}
 
-        $.ajax({
-            url: queryURL,
-            method: "GET"
-        }).done(function(response) {
-            var results = response.data;
-            $("#sports").empty();
-            for (var i = 0; i < results.length; i++) {
-                var sportsDiv = $("<div>");
-                var p = $("<p>").text("Rating: " + results[i].rating);
-                var sportsImg = $("<img>");
+function populateGIFContainer(mlbplayer) {
+    $.ajax({
+        url: "https://api.giphy.com/v1/gifs/search?q=" + mlbplayer +
+            "&api_key=3vpYgJ7viyfVBgB4NJcuUuN56N6oQl0C=" + cutOffRating + "&limit=" + numberOfGIFs,
+        method: "GET"
+    }).then(function(response) {
+        response.data.forEach(function(element) {
+            newDiv = $("<div>");
+            newDiv.addClass("individual-gif-container");
+            newDiv.append("<p>Rating: " + element.rating.toUpperCase() + "</p>");
+            var newImage = $("<img src = '" + element.images.fixed_height_still.url + "'>");
+            newImage.addClass("gif-image");
+            newImage.attr("state", "still");
+            newImage.attr("still-data", element.images.fixed_height_still.url);
+            newImage.attr("animated-data", element.images.fixed_height.url);
+            newDiv.append(newImage);
+            $("#gif-container").append(newDiv);
+        });
 
-                sportImg.attr("src", results[i].images.original_still.url);
-                sportImg.attr("data-still", results[i].images.original_still.url);
-                sportImg.attr("data-animate", results[i].images.original.url);
-                sportImg.attr("data-state", "still");
-                sportImg.attr("class", "gif");
-                sportDiv.append(p);
-                sportDiv.append(sportImg);
-                $("#sports").append(sportsDiv);
+        $("#gif-container").addClass("dotted-border");
+        $(".gif-image").unbind("click");
+        $(".gif-image").on("click", function() {
+            if ($(this).attr("state") === "still") {
+                $(this).attr("state", "animated");
+                $(this).attr("src", $(this).attr("animated-data"));
+            } else {
+                $(this).attr("state", "still");
+                $(this).attr("src", $(this).attr("still-data"));
             }
         });
     });
+}
 
-    function changeState() {
-        var state = $(this).attr("data-state");
-        var animateImage = $(this).attr("data-animate");
-        var stillImage = $(this).attr("data-still");
-
-        if (state == "still") {
-            $(this).attr("src", animateImage);
-            $(this).attr("data-state", "animate");
-        } else if (state == "animate") {
-            $(this).attr("src", stillImage);
-            $(this).attr("data-state", "still");
-        }
-    }
-
-    // $(document).on("click", "#input", displayImg);
-    $(document).on("click", ".gif", changeState);
-
+$(document).ready(function() {
+    renderButtons();
+    $("#submit").on("click", function() {
+        event.preventDefault();
+        addButton($("#baseball-player").val().trim());
+        $("#baseball-player").val("");
+    });
 });

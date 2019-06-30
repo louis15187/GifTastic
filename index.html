@@ -1,44 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-us">
 
 <head>
     <meta charset="UTF-8">
-    <title>Giftastic</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Baseball Player Gif Generator</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="assets/giftastic.js"></script>
 </head>
 
 <body>
-    <div class="container">
-        <div class="jumbotron text-center">
-            <h1>GIFS</h1>
-        </div>
-        <div class="row">
-            <div class="col-sm-8">
-                <div id="sports-buttons">
-
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <form id="form">
-                    <label for="sports-input">Add a sport</label><br>
-                    <input type="text" id="sports-input">
-                    <input id="add-sports" type="submit" value="Submit">
-                </form>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-8">
-                    <div id="sports">
-                    </div>
-                </div>
-            </div>
+    <div class="row">
+        <h1>MLB Players</h1>
+        <div id="button-container" class="dotted-border">
         </div>
     </div>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    </script>
-    <script type="text/javascript" src="assets/giftastic.js">
-    </script>
+    <div class="row">
+        <div id="gif-container" class="col-xs-8 comic-sans-font">
+        </div>
+        <div class="col-xs-1">
+        </div>
+        <div class="col-xs-3">
+            <form class="comic-sans-font">
+                Add buttons for your favorite Baseball Players:<br>
+                <input type="text" name="baseball-player" id="baseball-player" class="comic-sans-font">
+                <input type="submit" value="Submit" class="btn" id="submit">
+            </form>
+        </div>
+    </div>
 </body>
 
 </html>
